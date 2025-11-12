@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -33,7 +35,9 @@ export default function Register() {
             placeholder="Enter your full name"
           />
           {errors.fullname && (
-            <p className="text-red-500 text-sm mt-1">{errors.fullname.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.fullname.message}
+            </p>
           )}
         </div>
 
@@ -62,7 +66,9 @@ export default function Register() {
             placeholder="Enter your password"
           />
           {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
           )}
         </div>
 

@@ -2,6 +2,8 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
+import { auth } from "../../../firebaseconfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
   const {
@@ -10,9 +12,20 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
-    alert("Login Successful!");
+  const onSubmit = async (data) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+
+      alert("Login Successful!");
+      console.log("Logged In User:", userCredential.user);
+    } catch (error) {
+      alert(error.message);
+      console.error("Login Error:", error);
+    }
   };
 
   return (

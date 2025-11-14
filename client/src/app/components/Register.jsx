@@ -2,6 +2,8 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
+import { auth } from "../../../firebaseconfig";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 export default function Register() {
   const {
@@ -11,13 +13,29 @@ export default function Register() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Registration Data:", data);
-    alert("Registration Successful!");
-  };
-
   const password = watch("password");
 
+  const onSubmit = async (data) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+
+      // Optional: Set full name
+      await updateProfile(userCredential.user, {
+        displayName: data.fullname,
+      });
+
+      alert("Registration Successful!");
+      console.log("User:", userCredential.user);
+    } catch (error) {
+      alert(error.message);
+      console.error("Registration Error:", error);
+    }
+  };
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form

@@ -4,6 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../../../firebaseconfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   const {
@@ -13,6 +14,7 @@ export default function Register() {
     formState: { errors },
   } = useForm();
 
+  const router = useRouter(); 
   const password = watch("password");
 
   const onSubmit = async (data) => {
@@ -23,19 +25,22 @@ export default function Register() {
         data.password
       );
 
-      // Optional: Set full name
+      // Optional: Add full name
       await updateProfile(userCredential.user, {
         displayName: data.fullname,
       });
 
       alert("Registration Successful!");
-      console.log("User:", userCredential.user);
+
+      // 🚀 Redirect to login page
+      router.push("/login");
+
     } catch (error) {
       alert(error.message);
       console.error("Registration Error:", error);
     }
   };
-  
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form
@@ -115,6 +120,13 @@ export default function Register() {
         >
           Register
         </button>
+
+        <p className="text-center mt-4 text-sm">
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-600 hover:underline">
+            Login
+          </a>
+        </p>
       </form>
     </div>
   );

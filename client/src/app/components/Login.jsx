@@ -4,8 +4,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../../../firebaseconfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter(); 
+
   const {
     register,
     handleSubmit,
@@ -21,7 +24,7 @@ export default function Login() {
       );
 
       alert("Login Successful!");
-      console.log("Logged In User:", userCredential.user);
+      router.push("/"); 
     } catch (error) {
       alert(error.message);
       console.error("Login Error:", error);
@@ -73,6 +76,13 @@ export default function Login() {
         >
           Login
         </button>
+
+        <p className="text-center mt-4 text-sm">
+          Don't have an account?{" "}
+          <a href="/register" className="text-blue-600 hover:underline">
+            Register
+          </a>
+        </p>
       </form>
     </div>
   );
